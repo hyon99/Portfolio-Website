@@ -1,5 +1,4 @@
-Streamlit>=1.32
-Python 3.11+
+Streamlit
 Google ADK
 Google Gemini 2.5 Flash
 GITHUB ACCESS TOKEN
