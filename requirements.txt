@@ -1,0 +1,6 @@
+Streamlit>=1.32
+Python 3.11+
+Google ADK
+Google Gemini 2.5 Flash
+GITHUB ACCESS TOKEN
+Google AI Studio API Key

@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+    --bg: #08070c;
+    --bg-card: #121019;
+    --border: rgba(255,255,255,0.09);
+    --violet: #a855f7;
+    --magenta: #e94ff5;
+    --cyan: #38e0e0;
+    --text: #f3f1f7;
+    --text-dim: #a09cb0;
+}
+
+#MainMenu, header[data-testid="stHeader"], footer {visibility: hidden; height:0;}
+.stApp { background: radial-gradient(circle at 15% 0%, #16101f 0%, #08070c 45%) fixed; }
+.block-container { max-width: 880px; padding-top: 2.2rem; padding-bottom: 4rem; }
+
+* { font-family: 'Rajdhani', sans-serif; }
+h1,h2,h3, .display, .hero-name, .section-title { font-family: 'Orbitron', sans-serif; color: var(--text); letter-spacing: .01em; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ---------- signature: circuit divider ---------- */
+.circuit-divider { width:100%; height:26px; margin: 2.4rem 0 1.6rem 0; opacity:.55; }
+.circuit-divider svg { width:100%; height:100%; display:block; }
+
+/* ---------- nav wordmark (now a real button, clickable to go Home) ---------- */
+div[data-testid="stHorizontalBlock"] > div:first-child button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.4rem 0 !important;
+    margin: 0 !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 1.15rem !important;
+    letter-spacing: .03em !important;
+    background-image: linear-gradient(135deg, var(--violet), var(--magenta)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    text-shadow: 0 0 16px rgba(233,79,245,.4) !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    min-width: 0 !important;
+    opacity: 1 !important;
+}
+div[data-testid="stHorizontalBlock"] > div:first-child button:hover {
+    text-shadow: 0 0 22px rgba(233,79,245,.6) !important;
+}
+
+div[data-testid="stButton"] > button {
+    border-radius: 999px !important;
+    padding: 0.45rem 1.1rem !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    transition: all .22s ease !important;
+    line-height:1.1 !important;
+    white-space: nowrap !important;
+}
+div[data-testid="stButton"] > button[kind="secondary"] {
+    background: rgba(255,255,255,0.02) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-dim) !important;
+}
+div[data-testid="stButton"] > button[kind="secondary"]:hover {
+    border-color: var(--magenta) !important;
+    color: var(--text) !important;
+}
+div[data-testid="stButton"] > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--violet), var(--magenta)) !important;
+    border: none !important;
+    color: #0a0710 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 22px rgba(233,79,245,.28) !important;
+}
+
+/* ---------- glowing aura AI Agent nav button (only the last nav column) ----------
+   NOTE: must scope to the last COLUMN, not the last stButton — each column
+   only ever contains one stButton, so ":last-child" on stButton itself
+   matches every button trivially. Scoping one level up fixes that. */
+div[data-testid="stHorizontalBlock"] > div:last-child div[data-testid="stButton"] > button {
+    background: rgba(10,8,16,0.55) !important;
+    border: 1px solid rgba(168,85,247,0.4) !important;
+    color: var(--text) !important;
+    font-weight: 600 !important;
+    animation: auraPulse 3.6s ease-in-out infinite !important;
+}
+@keyframes auraPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 14px 2px rgba(168,85,247,.4),
+            0 0 28px 8px rgba(168,85,247,.28),
+            0 0 44px 16px rgba(168,85,247,.16);
+    }
+    50% {
+        box-shadow:
+            0 0 20px 4px rgba(168,85,247,.6),
+            0 0 38px 12px rgba(168,85,247,.4),
+            0 0 58px 22px rgba(168,85,247,.24);
+    }
+}
+
+/* ---------- AI Agent chat input — purple glow, Gemini-style ---------- */
+div[data-testid="stChatInput"] {
+    border-radius: 22px !important;
+    border: 1px solid rgba(168,85,247,0.45) !important;
+    background: rgba(18,16,25,0.6) !important;
+    animation: chatGlow 3.2s ease-in-out infinite !important;
+}
+div[data-testid="stChatInput"]:focus-within {
+    border-color: rgba(168,85,247,0.8) !important;
+}
+@keyframes chatGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 16px 2px rgba(168,85,247,.28),
+            0 0 32px 8px rgba(168,85,247,.16);
+    }
+    50% {
+        box-shadow:
+            0 0 22px 4px rgba(168,85,247,.45),
+            0 0 44px 14px rgba(168,85,247,.26);
+    }
+}
+
+/* ---------- eyebrow / tagline ---------- */
+.eyebrow { font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.22em;
+    text-transform:uppercase; color: var(--magenta); margin-bottom:.4rem; }
+.tagline { font-family:'Orbitron',sans-serif; font-weight:600; font-size:1.7rem;
+    background: linear-gradient(135deg, var(--violet), var(--magenta));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin: .2rem 0 1.6rem 0; }
+
+/* ---------- hero card ---------- */
+.hero-card { background: var(--bg-card); border:1px solid var(--border); border-radius: 28px;
+    padding: 2.2rem 2.4rem; box-shadow: 0 20px 60px rgba(0,0,0,.35); position:relative; overflow:hidden;}
+.hero-card::before{ content:""; position:absolute; inset:-2px; border-radius:28px; padding:2px;
+    background: linear-gradient(135deg, rgba(168,85,247,.5), rgba(233,79,245,.15), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;}
+.avatar-ring { width:150px; height:150px; border-radius:50%;
+    animation: avatarGlow 3.6s ease-in-out infinite; }
+.avatar-ring img { width:100%; height:100%; border-radius:50%; display:block; object-fit:cover; background:#1a1424;}
+@keyframes avatarGlow {
+    0%, 100% {
+        box-shadow: 0 0 24px 4px rgba(233,79,245,.3), 0 0 44px 10px rgba(168,85,247,.2);
+    }
+    50% {
+        box-shadow: 0 0 34px 8px rgba(233,79,245,.45), 0 0 60px 16px rgba(168,85,247,.3);
+    }
+}
+.hero-name { font-size:1.9rem; font-weight:700; margin: 0 0 .15rem 0; }
+.hero-role { color: var(--text-dim); font-size:.92rem; margin-bottom:1rem; }
+.hero-body p { color: var(--text-dim); line-height:1.6; font-size:.95rem; }
+.quote-block { border-left: 3px solid; border-image: linear-gradient(var(--violet), var(--magenta)) 1;
+    padding-left: 1rem; margin: 1.1rem 0; font-style: italic; color: var(--text); font-size:.95rem; }
+.cta-line { color: var(--cyan); font-weight:600; margin-top:.6rem; font-size:.95rem;}
+
+/* ---------- section title ---------- */
+.section-title { font-size: 2rem; font-weight:700; margin-bottom:.3rem; }
+.section-sub { color: var(--text-dim); font-size:.95rem; margin-bottom:1.6rem; max-width:620px; line-height:1.55;}
+
+/* ---------- generic card ---------- */
+.card { background: var(--bg-card); border:1px solid var(--border); border-radius:18px;
+    padding: 1.4rem 1.6rem; margin-bottom: 1.1rem; }
+.card p { color: var(--text-dim); line-height:1.6; font-size:.93rem; margin:0; }
+
+/* ---------- facts strip ---------- */
+.facts-strip { display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; margin-bottom:1.2rem; }
+@media (max-width:680px){ .facts-strip{ grid-template-columns:1fr; } }
+.fact-card { background: var(--bg-card); border:1px solid var(--border); border-radius:16px;
+    padding:1rem 1.2rem; }
+.fact-label { font-family:'JetBrains Mono',monospace; font-size:.7rem; color: var(--cyan);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:.3rem; }
+.fact-value { font-weight:600; font-size:.95rem; color: var(--text); }
+
+/* ---------- timeline ---------- */
+.timeline { position:relative; margin-left: 8px; padding-left: 26px;
+    border-left: 2px solid rgba(233,79,245,.25); }
+.t-item { position:relative; margin-bottom: 1.7rem; }
+.t-item::before{ content:""; position:absolute; left:-33px; top:4px; width:12px; height:12px; border-radius:50%;
+    background: linear-gradient(135deg, var(--violet), var(--magenta)); box-shadow:0 0 10px rgba(233,79,245,.6);}
+.t-year { font-family:'JetBrains Mono',monospace; color: var(--cyan); font-size:.78rem; letter-spacing:.08em;}
+.t-title { font-weight:600; font-size:1.05rem; margin:.15rem 0 .3rem 0; }
+.t-text { color: var(--text-dim); font-size:.9rem; line-height:1.55; }
+
+/* ---------- experience ---------- */
+.exp-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.4rem;}
+.exp-role { font-weight:700; font-size:1.1rem; }
+.exp-company { color: var(--magenta); font-weight:600; font-size:.9rem; }
+.exp-period { font-family:'JetBrains Mono',monospace; color: var(--text-dim); font-size:.76rem; }
+.chip-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.9rem; }
+.chip { background: rgba(168,85,247,.09); border:1px solid rgba(168,85,247,.3); color: #d9bdfb;
+    padding: .28rem .75rem; border-radius:999px; font-size:.76rem; font-family:'JetBrains Mono',monospace;}
+
+/* ---------- skills grid ---------- */
+.skill-cat { font-weight:600; font-size:.85rem; color: var(--cyan); margin: 1.1rem 0 .5rem 0;
+    text-transform:uppercase; letter-spacing:.08em; font-family:'JetBrains Mono',monospace;}
+.chip.skill { background: rgba(56,224,224,.07); border-color: rgba(56,224,224,.28); color:#bdf7f7;}
+
+/* ---------- project cards ---------- */
+.proj-title { font-weight:700; font-size:1.05rem; margin-bottom:.4rem; }
+.proj-link { display:inline-flex; align-items:center; gap:.4rem; margin-top:.9rem;
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; color: var(--cyan);
+    text-decoration:none; border:1px solid rgba(56,224,224,.35); border-radius:999px;
+    padding:.35rem .9rem; transition: all .2s ease; }
+.proj-link:hover { background: rgba(56,224,224,.1); border-color: var(--cyan); }
+
+/* ---------- do grid ---------- */
+.do-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width:680px){ .do-grid{ grid-template-columns: 1fr; } }
+.do-title{ font-weight:700; margin-bottom:.4rem; font-size:1.02rem;}
+
+/* ---------- certifications ---------- */
+.cert-item{ display:flex; align-items:center; gap:.6rem; padding:.6rem 0; border-bottom:1px solid var(--border); font-size:.9rem; color: var(--text);}
+.cert-item:last-child{ border-bottom:none; }
+.cert-dot{ width:7px; height:7px; border-radius:50%; background: linear-gradient(135deg, var(--violet), var(--magenta)); flex-shrink:0;}
+
+/* ---------- contact grid ---------- */
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:680px){ .contact-grid{ grid-template-columns:1fr; } }
+.contact-card{ background: var(--bg-card); border:1px solid var(--border); border-radius:16px;
+    padding:1.1rem 1.3rem; display:flex; align-items:center; gap:.9rem; text-decoration:none; transition: border-color .2s ease, transform .2s ease;}
+.contact-card:hover{ border-color: var(--magenta); transform: translateY(-2px); }
+.contact-icon{ width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, rgba(168,85,247,.18), rgba(233,79,245,.1)); color: var(--magenta); flex-shrink:0;}
+.contact-label{ font-size:.72rem; color: var(--text-dim); text-transform:uppercase; letter-spacing:.08em; font-family:'JetBrains Mono',monospace;}
+.contact-value{ color: var(--text); font-weight:600; font-size:.92rem; }
+
+.goal-list{ list-style:none; padding:0; margin:0; }
+.goal-list li{ padding: .5rem 0 .5rem 1.6rem; position:relative; color: var(--text-dim); font-size:.92rem; border-bottom:1px solid var(--border);}
+.goal-list li:last-child{ border-bottom:none; }
+.goal-list li::before{ content:"→"; position:absolute; left:0; color: var(--cyan); }
+
+.microcopy{ text-align:center; color: var(--text-dim); font-style:italic; font-size:.88rem; margin: 2.4rem 0 .4rem 0; opacity:.8;}
+
+/* ---------- animation ---------- */
+.fade-up{ opacity:0; transform: translateY(26px); animation: fadeInUp .8s cubic-bezier(.16,.8,.3,1) forwards; }
+@keyframes fadeInUp{ to{ opacity:1; transform:translateY(0);} }
