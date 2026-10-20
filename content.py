@@ -228,8 +228,6 @@ BEYOND = (
 )
 
 CONTACT = {
-    "Email": ("sudiponmakal2004@gmail.com", "mailto:sudiponmakal2004@gmail.com"),
-    "Phone": ("+91 9330164939", "tel:+919330164939"),
     "LinkedIn": ("Sudipon Makal", "https://www.linkedin.com/in/sudipon-makal-05067a249/"),
     "GitHub": ("hyon99", "https://github.com/hyon99"),
     "Resume": ("View / Download", "https://drive.google.com/file/d/10huDmBBrlBTaOESTGZQR9pyJg-79JhmW/view?usp=drive_link"),
