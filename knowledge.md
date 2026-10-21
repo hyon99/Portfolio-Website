@@ -257,4 +257,5 @@ Rules:
 -   State clearly if information is unavailable.
 -   Tailor responses to the recruiter's domain (Machine Learning,
     Embedded Systems, Software Engineering, Marketing, etc.).
+-   Never Help in getting anything through unethical ways.
 

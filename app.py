@@ -16,7 +16,7 @@ import streamlit as st
 # --------------------------------------------------------------------------
 st.set_page_config(
     page_title="Sudipon Makal — Portfolio",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed",
 )
 
@@ -36,7 +36,10 @@ def load_css(path: Path) -> None:
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 
-AVATAR_B64 = _b64(ASSETS / "avatar.jpg") if (ASSETS / "avatar.jpg").exists() else ""
+AVATAR_PATH = ASSETS / "avatar_idle.png"
+AVATAR_B64 = _b64(AVATAR_PATH) if AVATAR_PATH.exists() else ""  # lobby scene only
+HOME_AVATAR_PATH = ASSETS / "avatar.jpg"
+HOME_AVATAR_B64 = _b64(HOME_AVATAR_PATH) if HOME_AVATAR_PATH.exists() else ""
 
 
 # --------------------------------------------------------------------------
@@ -104,11 +107,35 @@ def microcopy(page: str) -> None:
 
 
 # --------------------------------------------------------------------------
-# Navigation state
+# Game-like intro / loading lobby
 # --------------------------------------------------------------------------
 PAGES = ["Home", "About Me", "Experience", "Projects", "Contact Me", "AI Agent"]
 if "page" not in st.session_state:
     st.session_state.page = "Home"
+if "entered_lobby" not in st.session_state:
+    st.session_state.entered_lobby = False
+
+if not st.session_state.entered_lobby:
+    st.markdown('''
+    <div class="game-loading-screen">
+      <div class="loading-skyline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="loading-topline"><span>SM // DIGITAL UNIVERSE</span><span>BUILD 2026.10 · ONLINE</span></div>
+      <div class="loading-center">
+        <div class="loading-emblem"><div class="emblem-core">SM</div><div class="emblem-ring ring-a"></div><div class="emblem-ring ring-b"></div></div>
+        <div class="loading-kicker">A PERSONAL WORLD, NOT JUST A WEBSITE</div>
+        <div class="loading-title">ENTER THE<br><span>PORTFOLIOVERSE</span></div>
+        <p class="loading-subtitle">Explore the world. Discover the work.</p>
+        <div class="loading-progress"><span></span></div>
+        <div class="loading-status"><span>WORLD SYSTEMS READY</span><span>100%</span></div>
+      </div>
+      <div class="loading-avatars"><div class="npc npc-red"><b></b><i></i><small>BUILDER</small></div><div class="npc npc-cyan"><b></b><i></i><small>EXPLORER</small></div><div class="npc npc-violet"><b></b><i></i><small>CREATOR</small></div><div class="npc npc-gold"><b></b><i></i><small>ALLY</small></div><div class="npc npc-green"><b></b><i></i><small>SCOUT</small></div></div>
+      <div class="loading-footer">WASD NOT REQUIRED · YOUR CURIOSITY IS THE CONTROLLER</div>
+    </div>
+    ''', unsafe_allow_html=True)
+    if st.button("▶  ENTER WORLD", key="enter_lobby", type="primary", use_container_width=True):
+        st.session_state.entered_lobby = True
+        st.rerun()
+    st.stop()
 
 
 def render_nav():
@@ -130,7 +157,33 @@ def render_nav():
 
 render_nav()
 
-st.markdown('<div class="eyebrow">PORTFOLIO</div>', unsafe_allow_html=True)
+# Persistent game-lobby HUD: the player avatar changes pose for each destination.
+pose_map = {
+    "Home": ("HERO / IDLE", "pose-idle", "Welcome to my world"),
+    "About Me": ("HERO / THINKING", "pose-think", "Origin story unlocked"),
+    "Experience": ("HERO / READY", "pose-ready", "Missions & experience"),
+    "Projects": ("HERO / ACTION", "pose-action", "Projects unlocked"),
+    "Contact Me": ("HERO / WAVE", "pose-wave", "Open a new connection"),
+    "AI Agent": ("HERO / POWER-UP", "pose-power", "AI companion online"),
+}
+pose_label, pose_class, world_caption = pose_map.get(st.session_state.page, pose_map["Home"])
+main_avatar = (f'<img class="player-model" src="data:image/png;base64,{AVATAR_B64}" alt="3D-style player avatar" />' if AVATAR_B64 else '<span class="avatar-initials">SM</span>')
+st.markdown(f'''<div class="lobby-hud">
+  <div class="lobby-scene">
+    <div class="scene-scanlines"></div><div class="scene-sun"></div><div class="scene-city city-back"></div><div class="scene-city city-front"></div>
+    <div class="scene-label label-left"><span class="live-dot"></span> WORLD INSTANCE: ACTIVE<br><small>SECTOR 01 · PORTFOLIO DISTRICT</small></div>
+    <div class="scene-label label-right">{pose_label}<br><small>PLAYER 01 · SUDIPON</small></div>
+    <div class="player-avatar {pose_class}">{main_avatar}<div class="player-aura"></div></div>
+    <div class="player-shadow"></div>
+    <div class="npc-lobby npc-lobby-one"><div class="npc-body"><b></b><i></i></div><small>AI GUIDE</small></div>
+    <div class="npc-lobby npc-lobby-two"><div class="npc-body"><b></b><i></i></div><small>BUILDER</small></div>
+    <div class="npc-lobby npc-lobby-three"><div class="npc-body"><b></b><i></i></div><small>SCOUT</small></div>
+    <div class="scene-ground"></div><div class="scene-caption"><span class="scroll-unlock">SCROLL DOWN TO UNLOCK MORE INFORMATION <b>↓</b></span></div>
+  </div>
+  
+</div>''', unsafe_allow_html=True)
+
+st.markdown('<div class="eyebrow">PORTFOLIOVERSE / DESTINATION TERMINAL</div>', unsafe_allow_html=True)
 st.markdown(typewriter(TAGLINE, tag="div", css_class="tagline", speed=0.028), unsafe_allow_html=True)
 
 # --------------------------------------------------------------------------
@@ -138,14 +191,25 @@ st.markdown(typewriter(TAGLINE, tag="div", css_class="tagline", speed=0.028), un
 # --------------------------------------------------------------------------
 if st.session_state.page == "Home":
     avatar_img = (
-        f'<img src="data:image/png;base64,{AVATAR_B64}" alt="{NAME}"/>'
-        if AVATAR_B64 else ""
+        f'<img src="data:image/jpeg;base64,{HOME_AVATAR_B64}" alt="{NAME} avatar"/>'
+        if HOME_AVATAR_B64 else '<div class="avatar-placeholder"><span>SM</span><small>AVATAR CORE</small></div>'
     )
     st.markdown(f'''
     <div class="hero-card">
-      <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:flex-start;">
-        <div class="avatar-ring">{avatar_img}</div>
-        <div style="flex:1; min-width:260px;">
+      <div class="hero-grid">
+        <div class="metaverse-stage" aria-label="Metaverse avatar display">
+          <div class="stage-grid"></div>
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orbit orbit-three"></div>
+          <div class="avatar-platform"></div>
+          <div class="avatar-ring">{avatar_img}</div>
+          <div class="stage-tag tag-top">IDENTITY // 01</div>
+          <div class="stage-tag tag-bottom"><span class="live-dot"></span> DIGITAL TWIN ONLINE</div>
+          <div class="floating-node node-left">AI / ML</div>
+          <div class="floating-node node-right">IOT</div>
+        </div>
+        <div class="hero-copy">
           <div class="hero-name">{typewriter(NAME, speed=0.045)}</div>
           <div class="hero-role">{ROLE_LINE}</div>
           <div class="hero-body">
@@ -302,56 +366,62 @@ elif st.session_state.page == "Contact Me":
 # AI AGENT
 # --------------------------------------------------------------------------
 elif st.session_state.page == "AI Agent":
-    st.markdown(circuit_divider(), unsafe_allow_html=True)
-    st.markdown(f'<div class="section-title">{typewriter("AI Agent", speed=0.05)}</div>',
-                unsafe_allow_html=True)
-    st.markdown('<div class="section-sub">Ask me anything about Sudipon — his projects, '
-                'experience, skills, or background — and the assistant will answer.</div>',
-                unsafe_allow_html=True)
-
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
-            for img_bytes in msg.get("images", []):
-                st.image(img_bytes)
-
-    prompt = st.chat_input("Ask me anything about Sudipon...")
-    if prompt:
-        st.session_state.messages.append(
-            {
-                "role": "user",
-                "content": prompt,
-            }
-        )
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-        with st.spinner("Thinking..."):
-            try:
-                result = ask_agent(prompt)
-            except Exception as e:
-                result = {
-                    "text": f"Sorry, something went wrong while generating a response: {e}",
-                    "images": [],
-                }
-
-        # ask_agent returns {"text": str, "images": [bytes, ...]}; images are
-        # PNG bytes for any diagrams the agent generated via draw_block_diagram.
-        answer_text = result.get("text") or "Sorry, I couldn't generate a response — please try again."
-        images = result.get("images", [])
-
-        st.session_state.messages.append(
-            {
-                "role": "assistant",
-                "content": answer_text,
-                "images": images,
-            }
-        )
-        with st.chat_message("assistant"):
-            st.markdown(answer_text)
-            for img_bytes in images:
-                st.image(img_bytes)
+    st.markdown('<div class="game-screen ai-screen">', unsafe_allow_html=True)
+    left, right = st.columns([0.82, 1.45], gap="large")
+    with left:
+        st.markdown("""
+        <div class="mission-panel">
+          <div class="hud-kicker">PORTFOLIOVERSE // COMMS LINK</div>
+          <div class="mission-title">AI<br>ASSISTANT</div>
+          <div class="mission-rule"></div>
+          <div class="mission-status"><span class="status-dot"></span> CONNECTION ESTABLISHED</div>
+          <p class="mission-copy">Your interactive intelligence interface. Ask about projects, engineering experience, skills, or the story behind the build.</p>
+          <div class="mission-label">AVAILABLE INTEL</div>
+          <div class="intel-row"><span>01</span> PROJECT ARCHIVE</div>
+          <div class="intel-row"><span>02</span> EXPERIENCE LOG</div>
+          <div class="intel-row"><span>03</span> SKILL MATRIX</div>
+          <div class="intel-row"><span>04</span> BACKGROUND FILE</div>
+          <div class="operator-card"><div class="operator-orb">AI</div><div><b>PORTFOLIO INTELLIGENCE</b><small>Response system · Online</small></div></div>
+        </div>
+        """, unsafe_allow_html=True)
+    with right:
+        st.markdown("""
+        <div class="comms-header">
+          <div><div class="hud-kicker">SECURE CHANNEL / 04</div><div class="comms-title">COMMUNICATIONS</div></div>
+          <div class="live-pill"><span class="status-dot"></span> LIVE</div>
+        </div>
+        <div class="comms-subtitle">Talk to the portfolio assistant</div>
+        """, unsafe_allow_html=True)
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
+        chat_area = st.container(height=430, border=False)
+        with chat_area:
+            if not st.session_state.messages:
+                st.markdown("""
+                <div class="welcome-transmission">
+                  <div class="bot-emblem">AI</div>
+                  <div class="transmission-tag">INCOMING TRANSMISSION</div>
+                  <h3>Channel ready.</h3>
+                  <p>Ask me something about Sudipon's work. I can walk you through projects, tools, experience, and technical decisions.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            for msg in st.session_state.messages:
+                with st.chat_message(msg["role"], avatar="🤖" if msg["role"] == "assistant" else "👤"):
+                    st.markdown(msg["content"])
+                    for img_bytes in msg.get("images", []):
+                        st.image(img_bytes, use_container_width=True)
+        prompt = st.chat_input("Transmit a message…")
+        if prompt:
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.spinner("Establishing response…"):
+                try:
+                    result = ask_agent(prompt)
+                except Exception as e:
+                    result = {"text": f"Sorry, something went wrong while generating a response: {e}", "images": []}
+            answer_text = result.get("text") or "Sorry, I couldn't generate a response — please try again."
+            images = result.get("images", [])
+            st.session_state.messages.append({"role": "assistant", "content": answer_text, "images": images})
+            st.rerun()
+        st.markdown('<div class="comms-footer">ENTER TO TRANSMIT <span>•</span> AI-POWERED RESPONSE</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     microcopy("AI Agent")
